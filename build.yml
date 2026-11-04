@@ -1,0 +1,81 @@
+name: Build APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - ".github/workflows/build.yml"
+
+permissions:
+  contents: write
+
+env:
+  APP_NAME: "Meri Awaz"
+  APP_ID: "com.meriawaz.app"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Get files
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Prepare web files
+        run: |
+          test -f index.html || (echo "index.html NOT FOUND in repo root" && exit 1)
+          mkdir -p www
+          cp index.html www/index.html
+          for f in *.mp3 *.mp4 *.wav *.ogg *.png *.jpg *.jpeg *.gif *.webp *.css; do
+            if [ -f "$f" ]; then cp "$f" www/; fi
+          done
+          ls -la www
+
+      - name: Create Capacitor Android project
+        run: |
+          npm init -y
+          npm install @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6 @capacitor/filesystem@6 @capacitor/share@6
+          npx cap telemetry off || true
+          npx cap init "$APP_NAME" "$APP_ID" --web-dir www
+          npx cap add android
+          npx cap sync android
+
+      - name: Add permissions
+        run: |
+          M=android/app/src/main/AndroidManifest.xml
+          sed -i 's#</manifest>#    <uses-permission android:name="android.permission.RECORD_AUDIO" />\n    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />\n    <uses-permission android:name="android.permission.CAMERA" />\n    <uses-feature android:name="android.hardware.camera" android:required="false" />\n    <uses-feature android:name="android.hardware.microphone" android:required="false" />\n</manifest>#' "$M"
+          cat "$M"
+
+      - name: Build APK
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Collect APK
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk MeriAwaz.apk
+
+      - name: Save APK as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MeriAwaz-apk
+          path: MeriAwaz.apk
+
+      - name: Publish release with APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "build-${{ github.run_number }}" MeriAwaz.apk --title "Build ${{ github.run_number }}" --notes "Automatic APK build"

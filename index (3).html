@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>बोर्ड की तैयारी</title>
+<meta name="theme-color" content="#C62828">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Mukta:wght@400;600;800&family=Yatra+One&display=swap">
+<style>
+/* Layout: one phone-width column. Home lists one cover card per subject with a start button; start opens three importance levels; each level opens a ruled notebook page that saves itself. */
+:root {
+  --bg: #F6F1F0;
+  --fg: #2A1514;
+  --muted: #6E5754;
+  --line: #E4D6D3;
+  --panel: #FFFFFF;
+  --red: #C62828;
+  --hi: #C62828;
+  --mid: #B85400;
+  --lo: #F2C230;
+  --on-lo: #3A2A00;
+  --paper: #FFFFFF;
+  --ink: #1F2A44;
+  --ink-soft: #6B7A90;
+  --rule: #B9D3EE;
+  --margin: #E57373;
+  --danger: #B3261E;
+  --keep: #1B7A4B;
+  --font-hand: "Kalam", "Noto Sans Devanagari", "Mukta", sans-serif;
+  --font-display: "Yatra One", "Noto Sans Devanagari", "Mukta", sans-serif;
+  --font-body: "Mukta", "Noto Sans Devanagari", "Nirmala UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1A1010;
+    --fg: #F5E9E7;
+    --muted: #B79C98;
+    --line: #3A2523;
+    --panel: #261717;
+    --mid: #E8730C;
+    --danger: #FF8A80;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1A1010;
+  --fg: #F5E9E7;
+  --muted: #B79C98;
+  --line: #3A2523;
+  --panel: #261717;
+  --mid: #E8730C;
+  --danger: #FF8A80;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 32px;
+}
+.wrap { max-width: 460px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+.wrap > * { min-width: 0; }
+.list { gap: 32px; }
+.subj { display: flex; flex-direction: column; gap: 12px; }
+button { font: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible { outline: 3px solid var(--fg); outline-offset: 3px; }
+
+.cover {
+  position: relative;
+  background: var(--c);
+  border-radius: 12px;
+  padding: 34px 20px 30px;
+  text-align: center;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.cover::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1.5px solid rgba(255,255,255,.65);
+  border-radius: 8px;
+  pointer-events: none;
+}
+.cover .top { color: var(--c-soft); font-size: 18px; font-weight: 600; margin: 0; }
+.cover .big { font-family: var(--font-display); font-size: clamp(56px, 20vw, 84px); line-height: 1.2; margin: 0; font-weight: 400; overflow-wrap: anywhere; }
+.cover .rule { width: 42%; height: 3px; background: #fff; border-radius: 2px; }
+.cover .cls { font-size: 28px; font-weight: 800; margin: 0; }
+.cover .sub { color: var(--c-soft); font-size: 19px; margin: 0; }
+
+.go {
+  width: 100%;
+  min-height: 60px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 22px;
+  font-weight: 800;
+  padding: 12px 16px;
+}
+.go:active { transform: translateY(1px); }
+.days { margin: 0; text-align: center; color: var(--muted); font-size: 17px; }
+.days b { color: var(--fg); font-weight: 800; }
+
+.head { display: flex; align-items: center; gap: 12px; }
+.back {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1.5px solid var(--line);
+  background: var(--panel);
+  color: var(--fg);
+  border-radius: 10px;
+  font-size: 17px;
+  flex: none;
+}
+h1 { font-size: 26px; line-height: 1.25; margin: 0; font-weight: 800; }
+.lead { margin: 0; color: var(--muted); font-size: 17px; }
+
+.levels { display: flex; flex-direction: column; gap: 12px; }
+.lvl {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  border-radius: 12px;
+  padding: 16px 18px;
+  min-height: 82px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.lvl .t { font-size: 24px; font-weight: 800; line-height: 1.25; }
+.lvl .s { font-size: 16px; opacity: .92; }
+.lvl.hi { background: var(--hi); color: #fff; }
+.lvl.mid { background: var(--mid); color: #fff; }
+.lvl.lo { background: var(--lo); color: var(--on-lo); }
+.lvl:active { transform: translateY(1px); }
+
+.ask {
+  background: var(--panel);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ask p { margin: 0; font-weight: 600; }
+.tick { display: flex; align-items: center; gap: 12px; font-size: 19px; cursor: pointer; }
+.tick input { width: 26px; height: 26px; accent-color: var(--red); flex: none; }
+
+.paper {
+  background: var(--paper);
+  color: var(--ink);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.paper:focus-within { border-color: var(--fg); }
+.paper-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 2px solid var(--margin);
+}
+.save { font-size: 14px; color: var(--ink-soft); text-align: right; min-width: 0; }
+.sheet { position: relative; }
+.sheet::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 44px;
+  width: 2px;
+  background: var(--margin);
+  opacity: .7;
+  pointer-events: none;
+}
+.sheet textarea {
+  display: block;
+  width: 100%;
+  min-height: 504px;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  resize: none;
+  overflow: hidden;
+  outline: none;
+  background-color: var(--paper);
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 35px, var(--rule) 35px, var(--rule) 36px);
+  background-attachment: local;
+  color: var(--ink);
+  font-family: var(--font-hand);
+  font-size: 22px;
+  line-height: 36px;
+  padding: 0 14px 0 58px;
+}
+.sheet textarea::placeholder { color: var(--ink-soft); }
+.cover .big.long { font-size: clamp(38px, 12.5vw, 54px); line-height: 1.3; }
+.cover .extra { font-weight: 600; margin-top: -4px; }
+.savebar { display: flex; flex-direction: column; gap: 10px; }
+.keep {
+  width: 100%;
+  min-height: 60px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--keep);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+  padding: 12px 16px;
+}
+.keep:active { transform: translateY(1px); }
+.kept { margin: 0; text-align: center; color: var(--muted); font-size: 16px; }
+.err { margin: 0; text-align: center; color: var(--danger); font-size: 16px; font-weight: 600; }
+.restore {
+  min-height: 48px;
+  border: 1.5px solid var(--line);
+  background: var(--panel);
+  color: var(--fg);
+  border-radius: 10px;
+  font-size: 17px;
+  padding: 8px 14px;
+}
+.chip { display: inline-block; border-radius: 8px; padding: 2px 10px; font-weight: 800; font-size: 16px; }
+.chip.hi { background: var(--hi); color: #fff; }
+.chip.mid { background: var(--mid); color: #fff; }
+.chip.lo { background: var(--lo); color: var(--on-lo); }
+.chip.paper { background: var(--fg); color: var(--bg); }
+.lvl.paper { background: var(--fg); color: var(--bg); }
+.alt {
+  width: 100%;
+  min-height: 52px;
+  border: 1.5px solid var(--fg);
+  background: transparent;
+  color: var(--fg);
+  border-radius: 12px;
+  font-size: 19px;
+  font-weight: 600;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.alt svg { width: 22px; height: 22px; flex: none; }
+.right { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.pencil {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1.5px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.pencil svg { width: 20px; height: 20px; }
+.banner {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 20;
+  max-width: 460px;
+  margin: 0 auto 12px;
+  background: var(--hi);
+  color: #fff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.banner p { margin: 0; font-size: 22px; font-weight: 800; overflow-wrap: anywhere; }
+.banner button { min-height: 48px; border: 0; border-radius: 10px; background: #fff; color: #8E1B1B; font-weight: 800; font-size: 18px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field > label, .field > span { font-weight: 600; }
+.field input[type="time"], .field input[type="text"] {
+  font: inherit;
+  font-size: 22px;
+  min-height: 52px;
+  padding: 6px 12px;
+  width: 100%;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--fg);
+}
+.days7 { display: flex; flex-wrap: wrap; gap: 8px; }
+.dayb { min-width: 48px; min-height: 44px; padding: 0 10px; border: 1.5px solid var(--line); background: var(--panel); color: var(--fg); border-radius: 10px; font-size: 16px; }
+.dayb[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.alist { display: flex; flex-direction: column; gap: 10px; }
+.arow { display: flex; align-items: center; gap: 12px; background: var(--panel); border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.arow .tm { font-size: 28px; font-weight: 800; font-variant-numeric: tabular-nums; flex: none; }
+.arow .info { flex: 1; min-width: 0; }
+.arow .lb { overflow-wrap: anywhere; line-height: 1.3; }
+.arow .dy { color: var(--muted); font-size: 15px; }
+.arow input { width: 26px; height: 26px; accent-color: var(--keep); flex: none; }
+.del { min-height: 44px; border: 1.5px solid var(--line); background: transparent; color: var(--danger); border-radius: 10px; padding: 0 12px; font-size: 16px; flex: none; }
+.note { margin: 0; color: var(--muted); font-size: 15px; }
+@media (prefers-reduced-motion: reduce) { .go:active, .lvl:active { transform: none; } }
+</style>
+
+</head>
+<body>
+<div class="banner" id="banner" role="alert" hidden>
+  <p id="banner-text"></p>
+  <button type="button" id="banner-stop">बंद करो</button>
+</div>
+
+<main class="wrap">
+  <section id="v-home" aria-label="विषय">
+    <div class="wrap list" id="subjects"></div>
+  </section>
+
+  <section id="v-levels" aria-label="इम्पोर्टेंट लेवल" hidden>
+    <div class="wrap">
+      <div class="head">
+        <button class="back" type="button" data-go="v-home" aria-label="वापस">← वापस</button>
+        <h1 id="subj-title"></h1>
+      </div>
+      <p class="lead">पहले हाई इम्पोर्टेंट, फिर मीडियम, फिर लो।</p>
+      <div class="levels">
+        <button class="lvl hi" type="button" data-level="hi"><span class="t">हाई इम्पोर्टेंट</span><span class="s">हर साल आने वाले सवाल</span></button>
+        <button class="lvl mid" type="button" data-level="mid"><span class="t">मीडियम इम्पोर्टेंट</span><span class="s">कभी-कभी आने वाले सवाल</span></button>
+        <button class="lvl lo" type="button" data-level="lo"><span class="t">लो इम्पोर्टेंट</span><span class="s">आएँ या न आएँ, पक्का नहीं</span></button>
+        <button class="lvl paper" type="button" data-level="paper"><span class="t">मॉडल पेपर</span><span class="s">आपकी इम्पोर्टेंट परीक्षा के पेपर</span></button>
+      </div>
+      <div class="ask">
+        <p>क्या आप तैयारी कर रहे हैं?</p>
+        <label class="tick" for="prep"><input type="checkbox" id="prep"> हाँ, मैं तैयारी कर रहा हूँ</label>
+      </div>
+    </div>
+  </section>
+
+  <section id="v-level" aria-label="कॉपी" hidden>
+    <div class="wrap">
+      <div class="head">
+        <button class="back" type="button" data-go="v-levels" aria-label="वापस">← वापस</button>
+        <h1 id="lvl-title"></h1>
+      </div>
+      <p class="lead">किसी भी लाइन पर टैप करो और लिखो। जो लिखोगे अपने आप सेव होगा।</p>
+      <div class="paper">
+        <div class="paper-head"><span class="chip" id="lvl-chip"></span><span class="right"><span class="save" id="save" aria-live="polite"></span><button class="pencil" id="pencil" type="button" aria-label="लिखना शुरू करो"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l4-1 11-11a2.1 2.1 0 0 0-3-3L5 16l-1 4z"/><path d="M14 7l3 3"/></svg></button></span></div>
+        <div class="sheet"><textarea id="note" aria-label="कॉपी का पन्ना" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="यहाँ से लिखना शुरू करो"></textarea></div>
+      </div>
+      <div class="savebar">
+        <button class="keep" id="keep" type="button">✓ पक्का सेव करो</button>
+        <p class="err" id="keep-err" hidden>पहले कुछ लिखो, फिर सेव करो।</p>
+        <p class="kept" id="kept" aria-live="polite"></p>
+        <button class="restore" id="restore" type="button" hidden>सेव की हुई कॉपी वापस लाओ</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="v-alarm" aria-label="अलार्म" hidden>
+    <div class="wrap">
+      <div class="head">
+        <button class="back" type="button" data-go="v-home" aria-label="वापस">← वापस</button>
+        <h1 id="al-title"></h1>
+      </div>
+      <p class="lead">पढ़ने का टाइम चुनो। टाइम होने पर ऐप याद दिलाएगा।</p>
+      <div class="field"><label for="al-time">समय</label><input type="time" id="al-time"></div>
+      <div class="field"><label for="al-label">नाम (मर्ज़ी से)</label><input type="text" id="al-label" maxlength="40" autocomplete="off"></div>
+      <div class="field"><span id="al-days-l">किन दिनों</span><div class="days7" id="al-days" role="group" aria-labelledby="al-days-l"></div></div>
+      <p class="err" id="al-err" hidden></p>
+      <button class="keep" id="al-add" type="button">अलार्म जोड़ो</button>
+      <div class="alist" id="al-list"></div>
+      <p class="note">ये अलार्म तभी बजेगा जब ऐप खुला हो। ऐप बंद होने पर भी बजाना हो तो फोन की घड़ी में लगाओ।</p>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var SUBJECTS = [
+    { id: 'hindi', name: 'हिन्दी', short: 'हिंदी', c: '#C62828', s: '#FFCDD2', exam: [2027, 1, 5], label: '5 फरवरी' },
+    { id: 'maths', name: 'गणित', short: 'गणित', c: '#1F4FA8', s: '#C9D9F7', exam: [2027, 1, 13], label: '13 फरवरी' },
+    { id: 'science', name: 'विज्ञान', short: 'विज्ञान', c: '#1B7A4B', s: '#C6EBD6' },
+    { id: 'english', name: 'इंग्लिश', short: 'इंग्लिश', c: '#6A3FA0', s: '#E0D2F5' },
+    { id: 'social', name: 'सामाजिक विज्ञान', short: 'सामाजिक विज्ञान', long: true, extra: 'इतिहास भी इसी में', c: '#0E7490', s: '#C4E8F0', exam: [2027, 1, 8], label: '8 फरवरी' },
+    { id: 'art', name: 'कला', short: 'कला', c: '#A3205F', s: '#F7CCE0' }
+  ];
+  var levelNames = { hi: 'हाई इम्पोर्टेंट', mid: 'मीडियम इम्पोर्टेंट', lo: 'लो इम्पोर्टेंट', paper: 'मॉडल पेपर' };
+  var views = ['v-home', 'v-levels', 'v-level', 'v-alarm'];
+  var curSubj = SUBJECTS[0];
+
+  function show(id) {
+    flush();
+    views.forEach(function (v) { document.getElementById(v).hidden = (v !== id); });
+    window.scrollTo(0, 0);
+  }
+
+  var now = new Date();
+  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  var box = document.getElementById('subjects');
+  SUBJECTS.forEach(function (s) {
+    var days = '';
+    if (s.exam) {
+      var n = Math.round((new Date(s.exam[0], s.exam[1], s.exam[2]) - today) / 86400000);
+      if (n > 0) days = '<p class="days">पेपर (' + s.label + ') में <b>' + n + ' दिन</b> बाकी</p>';
+    }
+    var d = document.createElement('div');
+    d.className = 'subj';
+    d.style.setProperty('--c', s.c);
+    d.style.setProperty('--c-soft', s.s);
+    d.innerHTML =
+      '<div class="cover"><p class="top">UP बोर्ड 2027</p><h2 class="big"></h2><div class="rule"></div><p class="cls">कक्षा 10</p><p class="sub">UP बोर्ड की तैयारी</p>' + (s.extra ? '<p class="sub extra">' + s.extra + '</p>' : '') + '</div>' +
+      days +
+      '<button class="go" type="button">चलो स्टार्ट करते हैं</button>' +
+      '<button class="alt" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2"/><path d="M5 4L2.5 6.5M19 4l2.5 2.5"/></svg>अलार्म</button>';
+    d.querySelector('.big').textContent = s.name;
+    if (s.long) d.querySelector('.big').classList.add('long');
+    d.querySelector('.go').addEventListener('click', function () { openSubject(s); });
+    d.querySelector('.alt').addEventListener('click', function () { openAlarm(s); });
+    box.appendChild(d);
+  });
+
+  var prep = document.getElementById('prep');
+  function prepKey() { return curSubj.id === 'hindi' ? 'hindi-prep' : 'hindi-prep-' + curSubj.id; }
+  function openSubject(s) {
+    curSubj = s;
+    document.getElementById('subj-title').textContent = s.name + ': क्या पढ़ना है?';
+    try { prep.checked = localStorage.getItem(prepKey()) === '1'; } catch (e) { prep.checked = false; }
+    show('v-levels');
+  }
+  prep.addEventListener('change', function () {
+    try { localStorage.setItem(prepKey(), prep.checked ? '1' : '0'); } catch (e) {}
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-go]'), function (b) {
+    b.addEventListener('click', function () { show(b.getAttribute('data-go')); });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-level]'), function (b) {
+    b.addEventListener('click', function () {
+      var k = b.getAttribute('data-level');
+      document.getElementById('lvl-title').textContent = curSubj.short + ': ' + levelNames[k];
+      var chip = document.getElementById('lvl-chip');
+      chip.textContent = curSubj.short;
+      chip.className = 'chip ' + k;
+      openNote(curSubj.id === 'hindi' ? k : curSubj.id + '-' + k);
+      show('v-level');
+      grow();
+    });
+  });
+
+  var db = null;
+  try { window.claude.use('db').then(function (d) { db = d; loadAlarms(); }, function () {}); } catch (e) {}
+
+  var ta = document.getElementById('note');
+  var saveEl = document.getElementById('save');
+  var cur = null, dirty = false, timer = null, busy = null, lastSaved = {};
+  function lsGet(k) { try { return localStorage.getItem('hindi-note-' + k) || ''; } catch (e) { return ''; } }
+  function lsSet(k, v) { try { localStorage.setItem('hindi-note-' + k, v); } catch (e) {} }
+  function grow() { ta.style.height = 'auto'; ta.style.height = Math.max(ta.scrollHeight, 504) + 'px'; }
+  function status(t) { saveEl.textContent = t; }
+
+  function persist(k, text) {
+    lsSet(k, text);
+    if (!db) { lastSaved[k] = text; status('इसी फोन में सेव हुआ'); return; }
+    status('सेव हो रहा है…');
+    busy = (busy || Promise.resolve()).then(function () {
+      return db.doc('notes/' + k).set({ text: text, updated: Date.now() });
+    }).then(function () {
+      lastSaved[k] = text;
+      status('सेव हो गया');
+    }, function () {
+      lastSaved[k] = text;
+      status('इसी फोन में सेव हुआ');
+    });
+  }
+
+  function flush() {
+    if (timer) { clearTimeout(timer); timer = null; }
+    if (cur && ta.value !== lastSaved[cur]) persist(cur, ta.value);
+  }
+
+  function openNote(k) {
+    flush();
+    cur = k;
+    dirty = false;
+    var local = lsGet(k);
+    ta.value = local;
+    lastSaved[k] = local;
+    status('');
+    errEl.hidden = true;
+    savedCache[k] = lsGetSaved(k);
+    refreshKept();
+    if (db) {
+      db.doc('saved/' + k).get().then(function (s) {
+        if (cur !== k) return;
+        var r = s.exists ? s.data() : null;
+        if (r && typeof r.text === 'string') {
+          var mine = savedCache[k];
+          if (!mine || (r.at || 0) >= (mine.at || 0)) {
+            savedCache[k] = { text: r.text, at: r.at || 0 };
+            lsSetSaved(k, savedCache[k]);
+          }
+          refreshKept();
+        } else if (savedCache[k]) {
+          var rec = savedCache[k];
+          busy = (busy || Promise.resolve()).then(function () { return db.doc('saved/' + k).set(rec); }).then(null, function () {});
+        }
+      }, function () {});
+      db.doc('notes/' + k).get().then(function (s) {
+        if (cur !== k || dirty) return;
+        var t = s.exists ? s.data().text : undefined;
+        if (typeof t === 'string') {
+          ta.value = t;
+          lastSaved[k] = t;
+          lsSet(k, t);
+          grow();
+        } else if (local) {
+          lastSaved[k] = null;
+          persist(k, local);
+        }
+      }, function () {});
+    }
+  }
+
+  var keepBtn = document.getElementById('keep');
+  var keptEl = document.getElementById('kept');
+  var restoreBtn = document.getElementById('restore');
+  var errEl = document.getElementById('keep-err');
+  var savedCache = {};
+  function lsGetSaved(k) {
+    try { var v = localStorage.getItem('hindi-saved-' + k); return v ? JSON.parse(v) : null; } catch (e) { return null; }
+  }
+  function lsSetSaved(k, rec) { try { localStorage.setItem('hindi-saved-' + k, JSON.stringify(rec)); } catch (e) {} }
+  function fmt(t) {
+    try { return new Date(t).toLocaleString('hi-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; }
+  }
+  function refreshKept() {
+    var s = cur ? savedCache[cur] : null;
+    keptEl.textContent = s ? 'पक्का सेव है: ' + fmt(s.at) + '। ये मिटेगा नहीं।' : 'अभी तक पक्का सेव नहीं किया';
+    restoreBtn.hidden = !(s && ta.value !== s.text);
+  }
+  keepBtn.addEventListener('click', function () {
+    var k = cur;
+    var text = ta.value;
+    if (!k) return;
+    if (!text.trim()) { errEl.hidden = false; return; }
+    errEl.hidden = true;
+    var rec = { text: text, at: Date.now() };
+    savedCache[k] = rec;
+    lsSetSaved(k, rec);
+    flush();
+    refreshKept();
+    if (db) {
+      busy = (busy || Promise.resolve()).then(function () { return db.doc('saved/' + k).set(rec); }).then(null, function () {
+        if (cur === k) keptEl.textContent = 'पक्का सेव है, इसी फोन में: ' + fmt(rec.at);
+      });
+    } else {
+      keptEl.textContent = 'पक्का सेव है, इसी फोन में: ' + fmt(rec.at);
+    }
+  });
+  restoreBtn.addEventListener('click', function () {
+    var s = cur ? savedCache[cur] : null;
+    if (!s) return;
+    ta.value = s.text;
+    dirty = true;
+    grow();
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(flush, 800);
+    refreshKept();
+  });
+
+  ta.addEventListener('input', function () {
+    dirty = true;
+    errEl.hidden = true;
+    refreshKept();
+    grow();
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(flush, 800);
+  });
+  document.addEventListener('visibilitychange', function () { if (document.hidden) flush(); });
+  window.addEventListener('pagehide', flush);
+  document.getElementById('pencil').addEventListener('click', function () { ta.focus(); });
+
+  var DAYN = ['रवि', 'सोम', 'मंगल', 'बुध', 'गुरु', 'शुक्र', 'शनि'];
+  var alarms = [], alDirty = false, alBusy = null, rung = {}, selDays = [0, 1, 2, 3, 4, 5, 6], alSubj = SUBJECTS[0];
+  var alTime = document.getElementById('al-time');
+  var alLabel = document.getElementById('al-label');
+  var alErr = document.getElementById('al-err');
+  var alList = document.getElementById('al-list');
+  var alDays = document.getElementById('al-days');
+  try {
+    var raw = localStorage.getItem('hindi-alarms');
+    var parsed = raw ? JSON.parse(raw) : [];
+    if (Array.isArray(parsed)) alarms = parsed;
+  } catch (e) {}
+  var seeded = false;
+  try { seeded = localStorage.getItem('hindi-alarms-seeded') === '1'; } catch (e) {}
+  if (!seeded && !alarms.length) {
+    [
+      ['hindi', '06:00', 'हिंदी पढ़ो'],
+      ['social', '07:00', 'सामाजिक विज्ञान पढ़ो'],
+      ['english', '16:00', 'इंग्लिश पढ़ो'],
+      ['art', '16:30', 'कला पढ़ो'],
+      ['maths', '19:50', 'गणित पढ़ो']
+    ].forEach(function (r) {
+      alarms.push({ id: 'start-' + r[0], subj: r[0], time: r[1], label: r[2], days: [1, 2, 3, 4, 5, 6], on: true });
+    });
+    try {
+      localStorage.setItem('hindi-alarms-seeded', '1');
+      localStorage.setItem('hindi-alarms', JSON.stringify(alarms));
+    } catch (e) {}
+  }
+
+  function noSunday(list) {
+    var changed = false;
+    list.forEach(function (a) {
+      if (/^start-/.test(a.id) && a.days && a.days.length === 7) { a.days = [1, 2, 3, 4, 5, 6]; changed = true; }
+    });
+    return changed;
+  }
+  try {
+    if (localStorage.getItem('hindi-alarms-fix1') !== '1') {
+      noSunday(alarms);
+      localStorage.setItem('hindi-alarms-fix1', '1');
+      localStorage.setItem('hindi-alarms', JSON.stringify(alarms));
+    }
+  } catch (e) {}
+
+  function alSave() {
+    try { localStorage.setItem('hindi-alarms', JSON.stringify(alarms)); } catch (e) {}
+    if (db) {
+      var snap = alarms.slice();
+      alBusy = (alBusy || Promise.resolve()).then(function () {
+        return db.doc('config/alarms').set({ items: snap, v: 2 });
+      }).then(null, function () {});
+    }
+  }
+  function loadAlarms() {
+    if (!db) return;
+    db.doc('config/alarms').get().then(function (s) {
+      if (alDirty) { alSave(); return; }
+      var it = s.exists ? s.data().items : null;
+      if (Array.isArray(it)) {
+        alarms = it;
+        var old = s.data().v !== 2;
+        if (old && noSunday(alarms)) alSave();
+        try { localStorage.setItem('hindi-alarms', JSON.stringify(alarms)); } catch (e) {}
+        renderAlarms();
+      } else if (alarms.length) {
+        alSave();
+      }
+    }, function () {});
+  }
+
+  DAYN.forEach(function (n, i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'dayb';
+    b.textContent = n;
+    b.setAttribute('aria-pressed', 'true');
+    b.addEventListener('click', function () {
+      var at = selDays.indexOf(i);
+      if (at < 0) selDays.push(i); else selDays.splice(at, 1);
+      b.setAttribute('aria-pressed', at < 0 ? 'true' : 'false');
+      alErr.hidden = true;
+    });
+    alDays.appendChild(b);
+  });
+  function resetDays() {
+    selDays = [0, 1, 2, 3, 4, 5, 6];
+    Array.prototype.forEach.call(alDays.children, function (b) { b.setAttribute('aria-pressed', 'true'); });
+  }
+
+  function daysText(a) {
+    if (!a.days || a.days.length === 7) return 'रोज़';
+    return a.days.slice().sort().map(function (d) { return DAYN[d]; }).join(', ');
+  }
+  function renderAlarms() {
+    alList.textContent = '';
+    var mine = alarms.filter(function (a) { return a.subj === alSubj.id; }).sort(function (x, y) { return x.time < y.time ? -1 : 1; });
+    if (!mine.length) {
+      var p = document.createElement('p');
+      p.className = 'note';
+      p.textContent = 'अभी कोई अलार्म नहीं है।';
+      alList.appendChild(p);
+      return;
+    }
+    mine.forEach(function (a) {
+      var row = document.createElement('div');
+      row.className = 'arow';
+      var tm = document.createElement('div');
+      tm.className = 'tm';
+      tm.textContent = a.time;
+      var info = document.createElement('div');
+      info.className = 'info';
+      var lb = document.createElement('div');
+      lb.className = 'lb';
+      lb.textContent = a.label;
+      var dy = document.createElement('div');
+      dy.className = 'dy';
+      dy.textContent = daysText(a);
+      info.appendChild(lb);
+      info.appendChild(dy);
+      var cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = !!a.on;
+      cb.setAttribute('aria-label', a.time + ' का अलार्म चालू');
+      cb.addEventListener('change', function () { a.on = cb.checked; alDirty = true; alSave(); });
+      var del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'del';
+      del.textContent = 'हटाओ';
+      del.addEventListener('click', function () {
+        alarms = alarms.filter(function (x) { return x.id !== a.id; });
+        alDirty = true;
+        alSave();
+        renderAlarms();
+      });
+      row.appendChild(tm);
+      row.appendChild(info);
+      row.appendChild(cb);
+      row.appendChild(del);
+      alList.appendChild(row);
+    });
+  }
+  function openAlarm(s) {
+    alSubj = s;
+    document.getElementById('al-title').textContent = s.short + ': अलार्म';
+    alLabel.placeholder = s.short + ' पढ़ो';
+    alErr.hidden = true;
+    renderAlarms();
+    show('v-alarm');
+  }
+  document.getElementById('al-add').addEventListener('click', function () {
+    ensureAudio();
+    if (!alTime.value) { alErr.textContent = 'पहले समय चुनो।'; alErr.hidden = false; return; }
+    if (!selDays.length) { alErr.textContent = 'कम से कम एक दिन चुनो।'; alErr.hidden = false; return; }
+    alErr.hidden = true;
+    alarms.push({
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+      subj: alSubj.id,
+      time: alTime.value,
+      label: alLabel.value.trim() || (alSubj.short + ' पढ़ो'),
+      days: selDays.slice(),
+      on: true
+    });
+    alDirty = true;
+    alSave();
+    alTime.value = '';
+    alLabel.value = '';
+    resetDays();
+    renderAlarms();
+  });
+  [alTime, alLabel].forEach(function (el) { el.addEventListener('input', function () { alErr.hidden = true; }); });
+
+  var audio = null, ringTimer = null, ringEnd = 0;
+  function ensureAudio() {
+    try {
+      if (!audio) { var C = window.AudioContext || window.webkitAudioContext; if (C) audio = new C(); }
+      if (audio && audio.state === 'suspended') audio.resume();
+    } catch (e) {}
+  }
+  document.addEventListener('pointerdown', ensureAudio);
+  function beep() {
+    if (!audio) return;
+    try {
+      var o = audio.createOscillator(), g = audio.createGain();
+      o.frequency.value = 880;
+      g.gain.value = 0.15;
+      o.connect(g);
+      g.connect(audio.destination);
+      o.start();
+      o.stop(audio.currentTime + 0.25);
+    } catch (e) {}
+  }
+  function stopRing() {
+    if (ringTimer) { clearInterval(ringTimer); ringTimer = null; }
+    document.getElementById('banner').hidden = true;
+  }
+  function ring(a) {
+    document.getElementById('banner-text').textContent = a.label + ' (' + a.time + ')';
+    document.getElementById('banner').hidden = false;
+    window.scrollTo(0, 0);
+    try { if (navigator.vibrate) navigator.vibrate([300, 200, 300]); } catch (e) {}
+    if (ringTimer) clearInterval(ringTimer);
+    ringEnd = Date.now() + 60000;
+    beep();
+    ringTimer = setInterval(function () {
+      if (Date.now() > ringEnd) { stopRing(); return; }
+      beep();
+    }, 700);
+  }
+  document.getElementById('banner-stop').addEventListener('click', stopRing);
+  function tick() {
+    var n = new Date();
+    var hh = ('0' + n.getHours()).slice(-2) + ':' + ('0' + n.getMinutes()).slice(-2);
+    var key = n.toDateString() + hh;
+    alarms.forEach(function (a) {
+      if (!a.on || a.time !== hh) return;
+      if (a.days && a.days.indexOf(n.getDay()) < 0) return;
+      if (rung[a.id] === key) return;
+      rung[a.id] = key;
+      ring(a);
+    });
+  }
+  setInterval(tick, 10000);
+})();
+</script>
+</body>
+</html>
